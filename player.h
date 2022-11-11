@@ -6,10 +6,12 @@ class Player
 {
 public:
 	Player() = delete;
-	Player(int yearOfBirth, std::string category, bool registered);
+	Player(std::string firstName, std::string lastName, int yearOfBirth, std::string category, bool registered);
 
 private:
+	std::string m_firstName;
+	std::string m_lastName;
 	int m_yearOfBirth;
 	std::string m_category;
-	bool m_paid;
+	bool m_paidStatus;
 };

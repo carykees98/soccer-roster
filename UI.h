@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LeagueContainer.h"
+
 class UI
 {
 public:
@@ -10,4 +12,5 @@ private:
 	void menu();
 
 private:
+	LeagueContainer m_Players;
 };

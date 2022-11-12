@@ -8,6 +8,8 @@ public:
 	Player() = delete;
 	Player(std::string firstName, std::string lastName, int yearOfBirth, std::string category, bool registered);
 
+	std::string getLast() { return lastName; }
+
 private:
 	std::string m_firstName;
 	std::string m_lastName;

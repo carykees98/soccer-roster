@@ -1,10 +1,10 @@
 all: main clean
 
-main: main.cpp UI.o PlayerContainer.o
-	g++ -std=c++11 main.cpp UI.o PlayerContainer.o -o soccer-roster
+main: main.cpp MenuFunctions.o PlayerContainer.o
+	g++ -std=c++11 main.cpp MenuFunctions.o PlayerContainer.o -o soccer-roster
 
-UI.o: UI.h UI.cpp
-	g++ -std=c++11 -c UI.cpp
+MenuFunctions.o: MenuFunctions.h MenuFunctions.cpp
+	g++ -std=c++11 -c MenuFunctions.cpp
 
 Player.o: Player.h Player.cpp
 	g++ -std=c++11 -c Player.cpp
@@ -15,4 +15,4 @@ PlayerContainer.o: Player.o PlayerContainer.h PlayerContainer.cpp
 clean:
 	rm Player.o
 	rm PlayerContainer.o
-	rm UI.o
+	rm MenuFunctions.o

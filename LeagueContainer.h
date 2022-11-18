@@ -9,10 +9,15 @@
 class LeagueContainer
 {
 public:
-	void loadFromFile();
-	void saveToFile();
-	std::list<Player> findPlayerByLast(std::string lastName);
+	std::list<Player> searchByKeyword(std::string keyword);
+	std::list<Player> searchForPlayers();
+	void addPlayer();
+	void resetLeague() { m_leaguePlayers.clear(); }
+	void startNewSeason();
+	void saveLeagueToFile();
+	void saveSearchToFile();
 
 private:
 	std::map<std::string, Player> m_leaguePlayers;
+	int32_t m_currentYear;
 };

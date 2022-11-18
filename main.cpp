@@ -1,8 +1,9 @@
-#include "UI.h"
+#include "MenuFunctions.h"
+#include "LeagueContainer.h"
 
 int main(int argc, char const *argv[])
 {
-	UI userInterface;
-	userInterface.run();
+	LeagueContainer league;
+	mainMenu(league);
 	return 0;
 }

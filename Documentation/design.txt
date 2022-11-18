@@ -1,0 +1,16 @@
+Menu Options Required: 
+	- Main: 
+		- Start New Season
+		- Add Player
+		- Enter Search Mode
+		- Display Stats
+		- Save Players to File by Category
+		- Kill Program
+
+	- Results:
+		- Edit Player
+		- Exit Search Mode
+		- Next
+		- Previous
+		- Save Search to File by Last Name
+		- Kill Program

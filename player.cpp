@@ -2,13 +2,12 @@
 
 #include <string>
 
-Player::Player(std::string firstName, std::string lastName, int yearOfBirth, bool paidStatus = false)
+Player::Player(int32_t currentYear, std::string firstName, std::string lastName, int32_t yearOfBirth, bool paidStatus = false)
 {
 	m_firstName = firstName;
 	m_lastName = lastName;
 	m_yearOfBirth = yearOfBirth;
 	m_paidStatus = paidStatus;
 
-	// Determine Category By Age Below
-	switch ()
+	m_category = determineCategory(currentYear);
 }

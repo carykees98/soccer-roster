@@ -9,9 +9,9 @@
 class LeagueContainer
 {
 public:
-	std::list<Player> searchByKeyword(std::string keyword);
 	std::list<Player> searchForPlayers();
 	void addPlayer();
+	void printStatistics();
 	void resetLeague() { m_leaguePlayers.clear(); }
 	void startNewSeason();
 	void saveLeagueToFile();

@@ -3,19 +3,6 @@
 #include <list>
 #include <iostream>
 
-std::list<Player> LeagueContainer::searchByKeyword(std::string keyword)
-{
-	std::list<Player> matchedPlayers;
-	for (auto player : m_leaguePlayers)
-	{
-		if ((player.second.getLast() == keyword) || (player.second.getFirst() == keyword))
-		{
-			matchedPlayers.push_back(player.second);
-		}
-	}
-	return matchedPlayers;
-}
-
 void LeagueContainer::startNewSeason()
 {
 	int year;

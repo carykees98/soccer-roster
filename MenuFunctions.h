@@ -6,4 +6,4 @@ void mainMenu(LeagueContainer &league);
 
 void searchMenu(LeagueContainer &league);
 
-void runSearch();
+std::list<Player> runSearch(LeagueContainer &league);

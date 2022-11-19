@@ -1,18 +1,18 @@
 all: main clean
 
-main: main.cpp MenuFunctions.o LeagueContainer.o
-	g++ -std=c++11 main.cpp MenuFunctions.o LeagueContainer.o -o soccer-roster
+main: main.cpp menufunctions.o leaguecontainer.o
+	g++ -std=c++11 main.cpp menufunctions.o leaguecontainer.o -o soccer-roster
 
-MenuFunctions.o: MenuFunctions.h MenuFunctions.cpp
-	g++ -std=c++11 -c MenuFunctions.cpp
+leaguecontainer.o: player.o leaguecontainer.h leaguecontainer.cpp
+	g++ -std=c++11 -c leaguecontainer.cpp player.o
 
-Player.o: Player.h Player.cpp
-	g++ -std=c++11 -c Player.cpp
+menufunctions.o: menufunctions.h menufunctions.cpp
+	g++ -std=c++11 -c menufunctions.cpp
 
-LeagueContainer.o: Player.o LeagueContainer.h LeagueContainer.cpp
-	g++ -std=c++11 -c LeagueContainer.cpp Player.o
+player.o: player.h player.cpp
+	g++ -std=c++11 -c player.cpp
 
 clean:
-	rm Player.o
-	rm LeagueContainer.o
-	rm MenuFunctions.o
+	rm player.o
+	rm leaguecontainer.o
+	rm menufunctions.o

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "LeagueContainer.h"
+#include "leaguecontainer.h"
+#include "player.h"
 
 void mainMenu(LeagueContainer &league);
 

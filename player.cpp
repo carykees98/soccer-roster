@@ -18,11 +18,93 @@ std::ostream &operator<<(std::ostream &out, Player &toPrint)
 	out << toPrint.m_lastName << ", " << toPrint.m_firstName << " - " << toPrint.m_category << " ";
 	if (toPrint.m_paidStatus)
 	{
-		out << "Paid" << std::endl;
+		out << "Paid";
 	}
 	else
 	{
-		out << "Not Paid" << std::endl;
+		out << "Not Paid";
 	}
 	return out;
+}
+
+std::string Player::determineCategory(int32_t currentYear)
+{
+	int32_t age = m_yearOfBirth - currentYear;
+	if (age >= 4 && age < 6)
+	{
+		return "U4";
+	}
+	else if (age >= 6 && age < 8)
+	{
+		return "U8";
+	}
+	else if (age >= 8 && age < 10)
+	{
+		return "U10";
+	}
+	else if (age >= 10 && age < 12)
+	{
+		return "U12";
+	}
+	else if (age >= 12 && age < 14)
+	{
+		return "U14";
+	}
+	else if (age >= 14 && age < 17)
+	{
+		return "U17";
+	}
+	return "Invalid Age";
+}
+
+void Player::editPlayer()
+{
+	int menuChoice;
+	std::string errorMessage = "";
+
+	while (true)
+	{
+		std::cout << "\033c";
+		if (errorMessage != "")
+		{
+			std::cerr << "Error: " + errorMessage << std::endl
+					  << "-----------------------------------------" << std::endl;
+		}
+		std::cout << "Which field would you like to edit?" << std::endl
+				  << "1. First name" << std::endl
+				  << "2. Last name" << std::endl
+				  << "3. Birth Year" << std::endl
+				  << "4. Payment status" << std::endl;
+		std::cin >> menuChoice;
+
+		switch (menuChoice)
+		{
+		case 1:
+			std::cout << "Please enter the new first name" << std::endl
+					  << ">>> ";
+			std::cin >> m_firstName;
+			break;
+		case 2:
+			std::cin >> m_lastName;
+			break;
+		case 3:
+			std::cin >> m_yearOfBirth;
+			break;
+		case 4:
+			char statusAnswer[4];
+			std::cout << "Has the player paid? (y/n)" << std::endl
+					  << ">>> ";
+			std::cin >> statusAnswer;
+			if (toupper(statusAnswer[0]) == 'Y')
+			{
+				m_paidStatus = true;
+			}
+			else
+			{
+				m_paidStatus = false;
+			}
+		default:
+			errorMessage = "Please choose a valid option (1-4)";
+		}
+	}
 }

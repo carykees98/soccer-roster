@@ -9,13 +9,13 @@
 class LeagueContainer
 {
 public:
-	std::list<Player> searchForPlayers();
+	std::list<Player> searchForPlayers() const;
 	void addPlayer();
 	void printStatistics();
 	void resetLeague() { m_leaguePlayers.clear(); }
 	void startNewSeason();
 	void saveLeagueToFile();
-	void saveSearchToFile();
+	void saveSearchToFile(std::list<Player> &searchResult);
 
 private:
 	std::map<std::string, Player> m_leaguePlayers;

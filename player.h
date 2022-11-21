@@ -11,6 +11,8 @@ public:
 
 	std::string getLast() { return m_lastName; }
 	std::string getFirst() { return m_firstName; }
+	std::string getCategory() { return m_category; }
+	bool paymentStatus() { return m_paidStatus; }
 
 	void editPlayer();
 

@@ -26,6 +26,7 @@ void mainMenu(LeagueContainer &league)
 				  << "5. " << std::left << "Statistics" << std::endl
 				  << "6. " << std::left << "Exit program" << std::endl;
 		std::cin >> menuChoice;
+		std::cin.get(); // Catches the newline character from above cin statement to prevent issues in below functions
 		switch (menuChoice)
 		{
 		case 1:
@@ -92,6 +93,7 @@ void searchMenu(LeagueContainer &league)
 				  << "Exit program" << std::endl;
 
 		std::cin >> menuChoice;
+		std::cin.get(); // Catches the newline character from above cin statement to prevent issues in below functions
 		switch (menuChoice)
 		{
 		case 1:

@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 
-Player::Player(int32_t currentYear, std::string firstName, std::string lastName, int32_t yearOfBirth, bool paidStatus = false)
+Player::Player(int currentYear, std::string firstName, std::string lastName, int yearOfBirth, bool paidStatus = false)
 {
 	m_firstName = firstName;
 	m_lastName = lastName;
@@ -27,9 +27,9 @@ std::ostream &operator<<(std::ostream &out, Player &toPrint)
 	return out;
 }
 
-std::string Player::determineCategory(int32_t currentYear)
+std::string Player::determineCategory(int currentYear)
 {
-	int32_t age = m_yearOfBirth - currentYear;
+	int age = currentYear - m_yearOfBirth;
 	if (age >= 4 && age < 6)
 	{
 		return "U4";
@@ -64,17 +64,20 @@ void Player::editPlayer()
 
 	while (true)
 	{
-		std::cout << "\033c";
+		std::cout << "\033c"; // Clears the screen
 		if (errorMessage != "")
 		{
 			std::cerr << "Error: " + errorMessage << std::endl
 					  << "-----------------------------------------" << std::endl;
 		}
+		std::cout << "Add Player" << std::endl
+				  << "------------" << std::endl;
 		std::cout << "Which field would you like to edit?" << std::endl
 				  << "1. First name" << std::endl
 				  << "2. Last name" << std::endl
 				  << "3. Birth Year" << std::endl
-				  << "4. Payment status" << std::endl;
+				  << "4. Payment status" << std::endl
+				  << "5. Exit" << std::endl;
 		std::cin >> menuChoice;
 
 		switch (menuChoice)
@@ -103,6 +106,8 @@ void Player::editPlayer()
 			{
 				m_paidStatus = false;
 			}
+		case 5:
+			return;
 		default:
 			errorMessage = "Please choose a valid option (1-4)";
 		}

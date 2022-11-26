@@ -18,15 +18,18 @@ void mainMenu(LeagueContainer &league)
 			std::cerr << "Error: " + errorMessage << std::endl;
 		}
 		std::cout << "Main Menu" << std::endl
-				  << "-------------" << std::endl
+				  << "-----------" << std::endl
 				  << "1. " << std::left << "Start new season" << std::endl
 				  << "2. " << std::left << "Add a player" << std::endl
 				  << "3. " << std::left << "Search" << std::endl
 				  << "4. " << std::left << "Save league roster to file" << std::endl
 				  << "5. " << std::left << "Statistics" << std::endl
-				  << "6. " << std::left << "Exit program" << std::endl;
+				  << "6. " << std::left << "Exit program" << std::endl
+				  << std::endl
+				  << ">>> ";
 		std::cin >> menuChoice;
 		std::cin.get(); // Catches the newline character from above cin statement to prevent issues in below functions
+
 		switch (menuChoice)
 		{
 		case 1:
@@ -48,7 +51,7 @@ void mainMenu(LeagueContainer &league)
 			std::exit(0);
 			break;
 		default:
-			errorMessage = "Please choose a valid option (1-7)";
+			errorMessage = "Please choose a valid option (1-6)";
 		}
 	}
 }
@@ -58,8 +61,12 @@ void searchMenu(LeagueContainer &league)
 	int menuChoice;
 	std::string errorMessage;
 	std::list<Player> searchResult;
+	bool foundMatches = true;
 
-	searchResult = league.searchForPlayers();
+	searchResult = league.searchForPlayers(foundMatches);
+
+	if (!foundMatches)
+		return;
 
 	auto currentResult = searchResult.begin();
 
@@ -75,7 +82,7 @@ void searchMenu(LeagueContainer &league)
 		if (!searchResult.empty())
 		{
 			std::cout << *currentResult << std::endl
-					  << "-------------------------------------------------------------" << std::endl;
+					  << "-------------------------------" << std::endl;
 		}
 		std::cout << "1. "
 				  << "Search" << std::endl
@@ -90,14 +97,17 @@ void searchMenu(LeagueContainer &league)
 				  << "6. "
 				  << "Exit search results mode" << std::endl
 				  << "7. "
-				  << "Exit program" << std::endl;
+				  << "Exit program" << std::endl
+				  << std::endl
+				  << ">>> ";
 
 		std::cin >> menuChoice;
 		std::cin.get(); // Catches the newline character from above cin statement to prevent issues in below functions
+
 		switch (menuChoice)
 		{
 		case 1:
-			searchResult = league.searchForPlayers();
+			searchResult = league.searchForPlayers(foundMatches);
 			break;
 		case 2:
 			if (currentResult++ == searchResult.end())

@@ -8,6 +8,11 @@
 void LeagueContainer::startNewSeason()
 {
 	int year;
+
+	std::cout << "\033c" // Clears the screen
+			  << "Start a New Season" << std::endl
+			  << "--------------------" << std::endl;
+
 	std::cout << "Please enter a year for the season\n";
 
 	while (true)
@@ -23,6 +28,7 @@ void LeagueContainer::startNewSeason()
 		}
 		else
 		{
+			m_leaguePlayers.clear();
 			break;
 		}
 	}
@@ -37,11 +43,15 @@ void LeagueContainer::addPlayer()
 	char paidIntermediate[4];
 	bool paid;
 
+	std::cout << "\033c" // Clears the screen
+			  << "Add Player" << std::endl
+			  << "------------" << std::endl;
+
 	std::cout << "First Name: ";
-	std::cin >> firstName;
+	std::getline(std::cin, firstName);
 
 	std::cout << "Last Name: ";
-	std::cin >> lastName;
+	std::getline(std::cin, lastName);
 
 	std::cout << "Birth Year: ";
 	std::cin >> yearOfBirth;
@@ -100,6 +110,8 @@ void LeagueContainer::printStatistics()
 	}
 
 	std::cout << "\033c" // Clears the screen
+			  << "Statistics" << std::endl
+			  << "------------" << std::endl
 			  << "Total number of players: " << m_leaguePlayers.size() << std::endl
 			  << std::endl
 			  << "Paid: " << paidCount << std::endl
@@ -113,7 +125,6 @@ void LeagueContainer::printStatistics()
 			  << "Players in U17: " << under17Count << std::endl
 			  << "-----------------------------" << std::endl
 			  << "Press enter to return to menu" << std::endl;
-	std::cin.get(); // Catches newline from when entering the menu
 	std::cin.get();
 }
 
@@ -126,11 +137,100 @@ void LeagueContainer::saveSearchToFile(std::list<Player> &searchResult)
 	}
 }
 
-std::list<Player> LeagueContainer::searchForPlayers() const
+std::list<Player> LeagueContainer::searchForPlayers(bool &foundMatches) const
 {
+	std::string tempFirstName = "", tempLastName = "", tempBirthYear = "", tempCategory = "", tempKeyword = "", tempPaidString = "";
+	bool tempPaidBool = false;
 	std::list<Player> searchResult;
+
 	std::cout << "\033c" // Clears the screen
-			  << "";
+			  << "If you wish to search by a specific condition, enter a value, else press enter to go to the next condition" << std::endl
+			  << "---------------------------------------------------------------" << std::endl
+			  << "First name: ";
+	if (std::cin.peek() != '\n')
+	{
+		std::getline(std::cin, tempFirstName);
+	}
+	else
+	{
+		std::cin.get(); // Catches the newline character from the above peek to prevent next condition from being skipped
+	}
+	std::cout << "Last name: ";
+	if (std::cin.peek() != '\n')
+	{
+		std::getline(std::cin, tempLastName);
+	}
+	else
+	{
+		std::cin.get(); // Catches the newline character from the above peek to prevent next condition from being skipped
+	}
+	std::cout << "Category: ";
+	if (std::cin.peek() != '\n')
+	{
+		std::getline(std::cin, tempCategory);
+		tempCategory[0] = toupper(tempCategory[0]);
+		std::cout << tempCategory << std::endl;
+	}
+	else
+	{
+		std::cin.get(); // Catches the newline character from the above peek to prevent next condition from being skipped
+	}
+	std::cout << "Keyword (First Name or Last Name): ";
+	if (std::cin.peek() != '\n')
+	{
+		std::getline(std::cin, tempKeyword);
+	}
+	else
+	{
+		std::cin.get(); // Catches the newline character from the above peek to prevent next condition from being skipped
+	}
+	std::cout << "Paid (y/n): ";
+	if (std::cin.peek() != '\n')
+	{
+		std::getline(std::cin, tempPaidString);
+		if (toupper(tempPaidString[0]) == 'Y')
+		{
+			tempPaidBool = true;
+		}
+	}
+
+	// Search Conditions
+	bool firstNameMatches = true;
+	bool lastNameMatches = true;
+	bool categoryMatches = true;
+	bool keywordMatches = true;
+	bool paidStatusMatches = true;
+
+	for (auto player : m_leaguePlayers)
+	{
+		if (tempFirstName != "")
+		{
+			firstNameMatches = (tempFirstName == player.second.getFirst());
+		}
+		if (tempLastName != "")
+		{
+
+			lastNameMatches = (tempLastName == player.second.getLast());
+		}
+		if (tempCategory != "")
+		{
+			categoryMatches = (tempCategory == player.second.getCategory());
+		}
+		if (tempKeyword != "")
+		{
+			keywordMatches = (tempKeyword == player.second.getFirst() || tempKeyword == player.second.getLast());
+		}
+
+		paidStatusMatches = (tempPaidBool == player.second.paymentStatus());
+
+		if (firstNameMatches && lastNameMatches && categoryMatches && keywordMatches && paidStatusMatches)
+		{
+			searchResult.push_back(player.second);
+		}
+	}
+	if (searchResult.empty())
+		foundMatches = false;
+
 	return searchResult;
 }
 
@@ -139,6 +239,8 @@ void LeagueContainer::saveLeagueToFile()
 	std::ofstream outfile("league_data.txt");
 	for (auto player : m_leaguePlayers)
 	{
-		/* code */
+		if (player.second.getCategory() == "U")
+		{
+		}
 	}
 }

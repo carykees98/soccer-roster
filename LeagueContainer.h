@@ -9,7 +9,7 @@
 class LeagueContainer
 {
 public:
-	std::list<Player> searchForPlayers() const;
+	std::list<Player> searchForPlayers(bool &foundMatches) const;
 	void addPlayer();
 	void printStatistics();
 	void resetLeague() { m_leaguePlayers.clear(); }
@@ -19,5 +19,5 @@ public:
 
 private:
 	std::map<std::string, Player> m_leaguePlayers;
-	int32_t m_currentYear;
+	int m_currentYear;
 };

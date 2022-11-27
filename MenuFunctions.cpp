@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <utility>
 
 void mainMenu(LeagueContainer &league)
 {
@@ -16,6 +17,7 @@ void mainMenu(LeagueContainer &league)
 		if (!errorMessage.empty())
 		{
 			std::cerr << "Error: " + errorMessage << std::endl;
+			errorMessage.clear();
 		}
 		std::cout << "Main Menu" << std::endl
 				  << "-----------" << std::endl
@@ -25,7 +27,6 @@ void mainMenu(LeagueContainer &league)
 				  << "4. " << std::left << "Save league roster to file" << std::endl
 				  << "5. " << std::left << "Statistics" << std::endl
 				  << "6. " << std::left << "Exit program" << std::endl
-				  << std::endl
 				  << ">>> ";
 		std::cin >> menuChoice;
 		std::cin.get(); // Catches the newline character from above cin statement to prevent issues in below functions
@@ -60,8 +61,9 @@ void searchMenu(LeagueContainer &league)
 {
 	int menuChoice;
 	std::string errorMessage;
-	std::list<Player> searchResult;
+	std::list<std::pair<std::string, Player>> searchResult;
 	bool foundMatches = true;
+	int64_t currentResultNumber;
 
 	searchResult = league.searchForPlayers(foundMatches);
 
@@ -69,6 +71,7 @@ void searchMenu(LeagueContainer &league)
 		return;
 
 	auto currentResult = searchResult.begin();
+	currentResultNumber = 1;
 
 	while (true)
 	{
@@ -76,12 +79,14 @@ void searchMenu(LeagueContainer &league)
 		if (!errorMessage.empty())
 		{
 			std::cerr << "Error: " + errorMessage << std::endl;
+			errorMessage.clear();
 		}
 		std::cout << "Search Menu" << std::endl
 				  << "-------------" << std::endl;
 		if (!searchResult.empty())
 		{
-			std::cout << *currentResult << std::endl
+			std::cout << "Result " << currentResultNumber << " of " << searchResult.size() << ":" << std::endl
+					  << currentResult->second << std::endl
 					  << "-------------------------------" << std::endl;
 		}
 		std::cout << "1. "
@@ -98,7 +103,6 @@ void searchMenu(LeagueContainer &league)
 				  << "Exit search results mode" << std::endl
 				  << "7. "
 				  << "Exit program" << std::endl
-				  << std::endl
 				  << ">>> ";
 
 		std::cin >> menuChoice;
@@ -108,33 +112,39 @@ void searchMenu(LeagueContainer &league)
 		{
 		case 1:
 			searchResult = league.searchForPlayers(foundMatches);
+			currentResult = searchResult.begin();
 			break;
 		case 2:
-			if (currentResult++ == searchResult.end())
-			// increment is handled in if condition
+			currentResult++;
+			currentResultNumber++;
+			if (currentResult == searchResult.end())
 			{
 				currentResult = searchResult.begin();
+				currentResultNumber = 1;
 			}
 			break;
 		case 3:
 			if (currentResult == searchResult.begin())
 			{
-				currentResult = searchResult.end()--;
+				currentResult = searchResult.end();
+				currentResult--;
+				currentResultNumber = searchResult.size();
 			}
 			else
 			{
 				currentResult--;
+				currentResultNumber--;
 			}
 			break;
 		case 4:
-			currentResult->editPlayer();
+			currentResult->second.editPlayer(league.currentYear());
 			break;
 		case 5:
 			league.saveSearchToFile(searchResult);
 			break;
 		case 6:
+			league.update(searchResult);
 			return; // returns to main menu
-			break;
 		case 7:
 			std::exit(0);
 			break;

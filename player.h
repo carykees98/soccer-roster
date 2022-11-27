@@ -14,9 +14,10 @@ public:
 	std::string getCategory() { return m_category; }
 	bool paymentStatus() { return m_paidStatus; }
 
-	void editPlayer();
+	void editPlayer(int currentYear);
 
 	friend std::ostream &operator<<(std::ostream &out, Player &toPrint);
+	friend bool operator!=(Player &player1, Player &Player2);
 
 private:
 	std::string determineCategory(int currentYear);

@@ -3,7 +3,10 @@
 
 #include <list>
 #include <iostream>
+#include <vector>
+#include <string>
 #include <fstream>
+#include <utility>
 
 void LeagueContainer::startNewSeason()
 {
@@ -76,7 +79,7 @@ void LeagueContainer::printStatistics()
 	int under6Count = 0, under8Count = 0, under10Count = 0, under12Count = 0, under14Count = 0, under17Count = 0;
 	int paidCount = 0;
 
-	for (auto player : m_leaguePlayers)
+	for (auto &player : m_leaguePlayers)
 	{
 		if (player.second.getCategory() == "U6")
 		{
@@ -128,20 +131,21 @@ void LeagueContainer::printStatistics()
 	std::cin.get();
 }
 
-void LeagueContainer::saveSearchToFile(std::list<Player> &searchResult)
+void LeagueContainer::saveSearchToFile(std::list<std::pair<std::string, Player>> &searchResult)
 {
 	std::ofstream outfile("search_result.txt");
 	for (auto &player : searchResult)
 	{
-		outfile << player << std::endl;
+		outfile << player.second << std::endl;
 	}
 }
 
-std::list<Player> LeagueContainer::searchForPlayers(bool &foundMatches) const
+std::list<std::pair<std::string, Player>> LeagueContainer::searchForPlayers(bool &foundMatches) const
 {
 	std::string tempFirstName = "", tempLastName = "", tempBirthYear = "", tempCategory = "", tempKeyword = "", tempPaidString = "";
 	bool tempPaidBool = false;
-	std::list<Player> searchResult;
+	std::list<std::pair<std::string, Player>> searchResult;
+	bool searchByPaid;
 
 	std::cout << "\033c" // Clears the screen
 			  << "If you wish to search by a specific condition, enter a value, else press enter to go to the next condition" << std::endl
@@ -169,7 +173,6 @@ std::list<Player> LeagueContainer::searchForPlayers(bool &foundMatches) const
 	{
 		std::getline(std::cin, tempCategory);
 		tempCategory[0] = toupper(tempCategory[0]);
-		std::cout << tempCategory << std::endl;
 	}
 	else
 	{
@@ -192,6 +195,11 @@ std::list<Player> LeagueContainer::searchForPlayers(bool &foundMatches) const
 		{
 			tempPaidBool = true;
 		}
+		searchByPaid = true;
+	}
+	else
+	{
+		searchByPaid = false;
 	}
 
 	// Search Conditions
@@ -220,14 +228,17 @@ std::list<Player> LeagueContainer::searchForPlayers(bool &foundMatches) const
 		{
 			keywordMatches = (tempKeyword == player.second.getFirst() || tempKeyword == player.second.getLast());
 		}
-
-		paidStatusMatches = (tempPaidBool == player.second.paymentStatus());
+		if (searchByPaid)
+		{
+			paidStatusMatches = (tempPaidBool == player.second.paymentStatus());
+		}
 
 		if (firstNameMatches && lastNameMatches && categoryMatches && keywordMatches && paidStatusMatches)
 		{
-			searchResult.push_back(player.second);
+			searchResult.push_back(player);
 		}
 	}
+
 	if (searchResult.empty())
 		foundMatches = false;
 
@@ -237,10 +248,106 @@ std::list<Player> LeagueContainer::searchForPlayers(bool &foundMatches) const
 void LeagueContainer::saveLeagueToFile()
 {
 	std::ofstream outfile("league_data.txt");
-	for (auto player : m_leaguePlayers)
+
+	std::vector<Player> under6Players;
+	std::vector<Player> under8Players;
+	std::vector<Player> under10Players;
+	std::vector<Player> under12Players;
+	std::vector<Player> under14Players;
+	std::vector<Player> under17Players;
+
+	for (auto &player : m_leaguePlayers)
 	{
-		if (player.second.getCategory() == "U")
+		if (player.second.getCategory() == "U6")
 		{
+			under6Players.push_back(player.second);
+		}
+		else if (player.second.getCategory() == "U8")
+		{
+			under8Players.push_back(player.second);
+		}
+		else if (player.second.getCategory() == "U10")
+		{
+			under10Players.push_back(player.second);
+		}
+		else if (player.second.getCategory() == "U12")
+		{
+			under12Players.push_back(player.second);
+		}
+		else if (player.second.getCategory() == "U14")
+		{
+			under14Players.push_back(player.second);
+		}
+		else if (player.second.getCategory() == "U17")
+		{
+			under17Players.push_back(player.second);
+		}
+	}
+
+	if (!under6Players.empty())
+	{
+		outfile << "U6" << std::endl;
+		for (Player player : under6Players)
+		{
+			outfile << player << std::endl;
+		}
+		outfile << std::endl;
+	}
+	if (!under8Players.empty())
+	{
+		outfile << "U8" << std::endl;
+		for (Player player : under8Players)
+		{
+			outfile << player << std::endl;
+		}
+		outfile << std::endl;
+	}
+	if (!under10Players.empty())
+	{
+		outfile << "U10" << std::endl;
+		for (Player player : under10Players)
+		{
+			outfile << player << std::endl;
+		}
+		outfile << std::endl;
+	}
+	if (!under12Players.empty())
+	{
+		outfile << "U12" << std::endl;
+		for (Player player : under12Players)
+		{
+			outfile << player << std::endl;
+		}
+		outfile << std::endl;
+	}
+	if (!under14Players.empty())
+	{
+		outfile << "U14" << std::endl;
+		for (Player player : under14Players)
+		{
+			outfile << player << std::endl;
+		}
+		outfile << std::endl;
+	}
+	if (!under17Players.empty())
+	{
+		outfile << "U17" << std::endl;
+		for (Player player : under17Players)
+		{
+			outfile << player << std::endl;
+		}
+		outfile << std::endl;
+	}
+}
+
+void LeagueContainer::update(std::list<std::pair<std::string, Player>> &searchResult)
+{
+	for (auto &player : searchResult)
+	{
+		if (m_leaguePlayers.find(player.first)->second != player.second)
+		{
+			m_leaguePlayers.erase(player.first);
+			m_leaguePlayers.insert(player);
 		}
 	}
 }

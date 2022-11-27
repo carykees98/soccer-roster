@@ -57,7 +57,7 @@ std::string Player::determineCategory(int currentYear)
 	return "Invalid Age";
 }
 
-void Player::editPlayer()
+void Player::editPlayer(int currentYear)
 {
 	int menuChoice;
 	std::string errorMessage = "";
@@ -69,32 +69,43 @@ void Player::editPlayer()
 		{
 			std::cerr << "Error: " + errorMessage << std::endl
 					  << "-----------------------------------------" << std::endl;
+			errorMessage.clear();
 		}
-		std::cout << "Add Player" << std::endl
+		std::cout << "Edit Player" << std::endl
 				  << "------------" << std::endl;
 		std::cout << "Which field would you like to edit?" << std::endl
 				  << "1. First name" << std::endl
 				  << "2. Last name" << std::endl
 				  << "3. Birth Year" << std::endl
 				  << "4. Payment status" << std::endl
-				  << "5. Exit" << std::endl;
+				  << "5. Exit" << std::endl
+				  << ">>> ";
 		std::cin >> menuChoice;
 
 		switch (menuChoice)
 		{
 		case 1:
-			std::cout << "Please enter the new first name" << std::endl
+			std::cout << "\033c"; // Clears the screen
+			std::cout << "New first name" << std::endl
 					  << ">>> ";
 			std::cin >> m_firstName;
 			break;
 		case 2:
+			std::cout << "\033c"; // Clears the screen
+			std::cout << "New last name:" << std::endl
+					  << ">>> ";
 			std::cin >> m_lastName;
 			break;
 		case 3:
+			std::cout << "\033c"; // Clears the screen
+			std::cout << "New birth year:" << std::endl
+					  << ">>> ";
 			std::cin >> m_yearOfBirth;
+			m_category = determineCategory(currentYear);
 			break;
 		case 4:
 			char statusAnswer[4];
+			std::cout << "\033c"; // Clears the screen
 			std::cout << "Has the player paid? (y/n)" << std::endl
 					  << ">>> ";
 			std::cin >> statusAnswer;
@@ -106,10 +117,21 @@ void Player::editPlayer()
 			{
 				m_paidStatus = false;
 			}
+			break;
 		case 5:
 			return;
 		default:
 			errorMessage = "Please choose a valid option (1-4)";
 		}
 	}
+}
+
+bool operator!=(Player &player1, Player &player2)
+{
+	bool firstNameMatches = player1.m_firstName == player2.m_firstName;
+	bool lastNameMatches = player1.m_lastName == player2.m_lastName;
+	bool birthYearMatches = player1.m_yearOfBirth == player2.m_yearOfBirth;
+	bool paidStatusMatches = player1.m_paidStatus == player2.m_paidStatus;
+
+	return !(firstNameMatches && lastNameMatches && birthYearMatches && paidStatusMatches);
 }

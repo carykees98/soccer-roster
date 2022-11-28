@@ -1,0 +1,6 @@
+Goal: To create a roster program for a youth soccer league with the following capabilities
+
+	- Adding Players
+	- 
+	
+Requirements:

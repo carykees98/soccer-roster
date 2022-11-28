@@ -19,7 +19,7 @@ public:
 	void saveSearchToFile(std::list<std::pair<std::string, Player>> &searchResult);
 
 	// Uncategorized
-	void addPlayer();
+	void addPlayer(std::string &errorMessage);
 	void printStatistics();
 	void resetLeague() { m_leaguePlayers.clear(); }
 	void startNewSeason();

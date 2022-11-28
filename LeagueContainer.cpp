@@ -38,7 +38,7 @@ void LeagueContainer::startNewSeason()
 	m_currentYear = year;
 }
 
-void LeagueContainer::addPlayer()
+void LeagueContainer::addPlayer(std::string &errorMessage)
 {
 	std::string firstName;
 	std::string lastName;
@@ -58,6 +58,11 @@ void LeagueContainer::addPlayer()
 
 	std::cout << "Birth Year: ";
 	std::cin >> yearOfBirth;
+	if ((m_currentYear - yearOfBirth) < 4 || (m_currentYear - yearOfBirth) >= 17)
+	{
+		errorMessage = "Error: Player's age doesn't fall within the range of this league";
+		return;
+	}
 
 	std::cout << "Have they paid the registration fee? (y/n)" << std::endl
 			  << ">>> ";

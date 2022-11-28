@@ -347,7 +347,7 @@ void LeagueContainer::update(std::list<std::pair<std::string, Player>> &searchRe
 		if (m_leaguePlayers.find(player.first)->second != player.second)
 		{
 			m_leaguePlayers.erase(player.first);
-			m_leaguePlayers.insert(player);
+			m_leaguePlayers.insert(std::pair<std::string, Player>(player.second.getLast() + player.second.getFirst(), player.second));
 		}
 	}
 }

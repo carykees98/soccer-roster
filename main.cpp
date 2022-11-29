@@ -1,5 +1,5 @@
-#include "MenuFunctions.h"
-#include "LeagueContainer.h"
+#include "menufunctions.h"
+#include "leaguecontainer.h"
 
 int main(int argc, char const *argv[])
 {

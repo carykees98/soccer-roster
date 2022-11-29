@@ -8,6 +8,7 @@
 #include <fstream>
 #include <utility>
 #include <algorithm>
+#include <climits>
 
 void LeagueContainer::startNewSeason()
 {

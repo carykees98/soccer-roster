@@ -18,7 +18,7 @@ public:
 	void editPlayer(int currentYear);
 
 	friend std::ostream &operator<<(std::ostream &out, Player &toPrint);
-	friend bool operator<(Player &player1, Player &player2);
+	friend bool operator<(const Player &player1, const Player &player2);
 	friend bool operator!=(Player &player1, Player &Player2);
 
 private:

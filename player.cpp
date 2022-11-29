@@ -136,7 +136,7 @@ bool operator!=(Player &player1, Player &player2)
 	return !(firstNameMatches && lastNameMatches && birthYearMatches && paidStatusMatches);
 }
 
-bool operator<(Player &player1, Player &player2)
+bool operator<(const Player &player1, const Player &player2)
 {
 	if (player1.m_lastName < player2.m_lastName)
 	{

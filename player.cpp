@@ -135,3 +135,24 @@ bool operator!=(Player &player1, Player &player2)
 
 	return !(firstNameMatches && lastNameMatches && birthYearMatches && paidStatusMatches);
 }
+
+bool operator<(Player &player1, Player &player2)
+{
+	if (player1.m_lastName < player2.m_lastName)
+	{
+		return true;
+	}
+	else if (player1.m_lastName > player2.m_lastName)
+	{
+		return false;
+	}
+	else if ((player1.m_firstName < player2.m_firstName) && (player1.m_lastName == player2.m_lastName))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	std::cout << "crash" << std::endl;
+}

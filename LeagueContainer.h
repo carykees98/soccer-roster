@@ -18,6 +18,10 @@ public:
 	void saveLeagueToFile();
 	void saveSearchToFile(std::list<std::pair<std::string, Player>> &searchResult);
 
+	// Between Session Storage
+	void saveForNextSession();
+	void readFromLastSession();
+
 	// Uncategorized
 	void addPlayer(std::string &errorMessage);
 	void printStatistics();

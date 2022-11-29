@@ -49,6 +49,7 @@ void mainMenu(LeagueContainer &league)
 			league.printStatistics();
 			break;
 		case 6:
+			league.saveForNextSession();
 			std::exit(0);
 			break;
 		default:
@@ -146,6 +147,7 @@ void searchMenu(LeagueContainer &league)
 			league.update(searchResult);
 			return; // returns to main menu
 		case 7:
+			league.saveForNextSession();
 			std::exit(0);
 			break;
 		default:

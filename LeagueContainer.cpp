@@ -7,10 +7,11 @@
 #include <string>
 #include <fstream>
 #include <utility>
+#include <algorithm>
 
 void LeagueContainer::startNewSeason()
 {
-	int year;
+	int newYear;
 
 	std::cout << "\033c" // Clears the screen
 			  << "Start a New Season" << std::endl
@@ -21,7 +22,7 @@ void LeagueContainer::startNewSeason()
 	while (true)
 	{
 		std::cout << ">>> ";
-		std::cin >> year;
+		std::cin >> newYear;
 		if (std::cin.fail())
 		{
 			std::cerr << "Input is not a valid year. Please enter a year for the season\n";
@@ -31,11 +32,21 @@ void LeagueContainer::startNewSeason()
 		}
 		else
 		{
+			char response[4];
+			std::cout << "Are you sure you want to continue, this action will remove all current players. (y/n)" << std::endl
+					  << ">>> ";
+			std::cin >> response;
+
+			if (toupper(response[0]) != 'Y')
+			{
+				return;
+			}
+
 			m_leaguePlayers.clear();
 			break;
 		}
 	}
-	m_currentYear = year;
+	m_currentYear = newYear;
 }
 
 void LeagueContainer::addPlayer(std::string &errorMessage)
@@ -138,7 +149,11 @@ void LeagueContainer::printStatistics()
 
 void LeagueContainer::saveSearchToFile(std::list<std::pair<std::string, Player>> &searchResult)
 {
-	std::ofstream outfile("search_result.txt");
+	std::string fileName;
+	std::cout << "What would you like to name the file?" << std::endl
+			  << ">>> ";
+	std::cin >> fileName;
+	std::ofstream outfile(fileName);
 	for (auto &player : searchResult)
 	{
 		outfile << player.second << std::endl;
@@ -252,7 +267,11 @@ std::list<std::pair<std::string, Player>> LeagueContainer::searchForPlayers(bool
 
 void LeagueContainer::saveLeagueToFile()
 {
-	std::ofstream outfile("league_data.txt");
+	std::string fileName;
+	std::cout << "What would you like to name the file?" << std::endl
+			  << ">>> ";
+	std::cin >> fileName;
+	std::ofstream outfile(fileName);
 
 	std::vector<Player> under6Players;
 	std::vector<Player> under8Players;
@@ -288,9 +307,9 @@ void LeagueContainer::saveLeagueToFile()
 			under17Players.push_back(player.second);
 		}
 	}
-
 	if (!under6Players.empty())
 	{
+		std::sort(under6Players.begin(), under6Players.end());
 		outfile << "U6" << std::endl;
 		for (Player player : under6Players)
 		{
@@ -300,6 +319,7 @@ void LeagueContainer::saveLeagueToFile()
 	}
 	if (!under8Players.empty())
 	{
+		std::sort(under8Players.begin(), under8Players.end());
 		outfile << "U8" << std::endl;
 		for (Player player : under8Players)
 		{
@@ -309,6 +329,7 @@ void LeagueContainer::saveLeagueToFile()
 	}
 	if (!under10Players.empty())
 	{
+		std::sort(under10Players.begin(), under10Players.end());
 		outfile << "U10" << std::endl;
 		for (Player player : under10Players)
 		{
@@ -318,6 +339,7 @@ void LeagueContainer::saveLeagueToFile()
 	}
 	if (!under12Players.empty())
 	{
+		std::sort(under12Players.begin(), under12Players.end());
 		outfile << "U12" << std::endl;
 		for (Player player : under12Players)
 		{
@@ -327,6 +349,7 @@ void LeagueContainer::saveLeagueToFile()
 	}
 	if (!under14Players.empty())
 	{
+		std::sort(under14Players.begin(), under14Players.end());
 		outfile << "U14" << std::endl;
 		for (Player player : under14Players)
 		{
@@ -336,6 +359,7 @@ void LeagueContainer::saveLeagueToFile()
 	}
 	if (!under17Players.empty())
 	{
+		std::sort(under17Players.begin(), under17Players.end());
 		outfile << "U17" << std::endl;
 		for (Player player : under17Players)
 		{
@@ -354,5 +378,43 @@ void LeagueContainer::update(std::list<std::pair<std::string, Player>> &searchRe
 			m_leaguePlayers.erase(player.first);
 			m_leaguePlayers.insert(std::pair<std::string, Player>(player.second.getLast() + player.second.getFirst(), player.second));
 		}
+	}
+}
+
+void LeagueContainer::saveForNextSession()
+{
+	std::ofstream outfile("league.dat");
+
+	outfile << m_currentYear << " " << m_leaguePlayers.size() << std::endl;
+
+	for (auto &player : m_leaguePlayers)
+	{
+		outfile << player.second.getFirst() << std::endl
+				<< player.second.getLast() << std::endl
+				<< player.second.birthYear() << " " << player.second.paymentStatus() << std::endl;
+	}
+}
+
+void LeagueContainer::readFromLastSession()
+{
+	int numberOfRecords;
+	std::ifstream infile("league.dat");
+
+	infile >> m_currentYear >> numberOfRecords;
+	infile.get(); // catches newline character
+
+	std::string tempFirst;
+	std::string tempLast;
+	int tempBirthYear;
+	bool tempPaymentStatus;
+
+	for (size_t i = 0; i < numberOfRecords; i++)
+	{
+		std::getline(infile, tempFirst);
+		std::getline(infile, tempLast);
+		infile >> tempBirthYear >> tempPaymentStatus;
+		infile.get();
+
+		m_leaguePlayers.insert(std::pair<std::string, Player>(tempLast + tempFirst, Player(m_currentYear, tempFirst, tempLast, tempBirthYear, tempPaymentStatus)));
 	}
 }

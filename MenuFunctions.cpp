@@ -37,7 +37,7 @@ void mainMenu(LeagueContainer &league)
 			league.startNewSeason();
 			break;
 		case 2:
-			league.addPlayer();
+			league.addPlayer(errorMessage);
 			break;
 		case 3:
 			searchMenu(league);

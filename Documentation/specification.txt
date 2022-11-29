@@ -1,6 +1,38 @@
-Goal: To create a roster program for a youth soccer league with the following capabilities
+UI
 
-	- Adding Players
-	- 
-	
-Requirements:
+	- The menus are put together so that each action corresponds to a specific number. In order to use the menu
+	  a number must be given, a character will result in an error message for being outside the range of options.
+	- Each menu clears the screen in order to make the terminal less cluttered. It does so by printing out an escape
+	  sequence which clears the current buffer of all text.
+
+Output File Formats:
+
+	- Save Between Sessions
+
+		- Data saved includes the current season year, number of players in the league, players first name,
+		  last name, birth year, and payment status
+		- The payment status is stored as a 1 or 0 since the underlying storage method is a boolean
+		- The names are stored on separate lines since std::getline is used to get them from the file
+		- The first line of the file contains the year and the number of players in the league
+
+		Ex.
+			2020 1
+			Cary
+			Keesler
+			2004 1
+
+	- Full League Save
+
+		- Output is broken down by player category from youngest to oldest with headings
+		  to indicate the category
+		- Prints the players name, category, and payment status
+		
+		Ex.
+			U17
+			Keesler, Cary - U17 Paid
+
+	- Search Result Save
+
+		- Output is not broken down into any categories
+		- Prints the players name, category, and payment status
+			Ex. Keesler, Cary - U17 Paid

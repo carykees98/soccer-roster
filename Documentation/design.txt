@@ -1,16 +1,20 @@
-Menu Options Required: 
-	- Main: 
-		- Start New Season
-		- Add Player
-		- Enter Search Mode
-		- Display Stats
-		- Save Players to File by Category
-		- Kill Program
+Design Decisions:
 
-	- Results:
-		- Edit Player
-		- Exit Search Mode
-		- Next
-		- Previous
-		- Save Search to File by Last Name
-		- Kill Program
+	- Menus
+
+		- Initially I had considered making the menus into a class of their own. However after
+		  consideration I decided to just make them functions as the menus wouldn't own any data
+		  except for the league.
+
+	- League Container
+	
+		- The underlying data structure of the league container is std::map
+			- Alternative data structures are std::vector, std::list, or std::multimap
+			- I chose to use std::map over std::vector and std::list because it meets the
+			  time complexity requirements of the project description. std::multimap, is a 
+			  better alternative to std::map for this use case however, it wasn't allowed.
+
+	- Player
+		- A Player object stores all of the information related to a specific player, including the
+		  first name, last name, category, payment status and birth year. It provides operators for
+		  comparison and for printing data so that the player can be passed to std::cin or std::ofstream.
